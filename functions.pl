@@ -12,7 +12,10 @@ foreach (@array){
   @dump= grep{/dump/} @array;
 }
 
+open (MYFILE, '>reject.txt');
 foreach(@reject){
   @reject_reason=split(/;/, $reject[$_]);
-  print "{$reject_reason[1]}\n";
+  @from= split(/ /, $reject_reason[3]);
+  print MYFILE "($from[1] - $reject_reason[1])\n";
 }
+close (MYFILE);
