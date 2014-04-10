@@ -11,11 +11,20 @@ foreach (@array){
   @reject= grep{/reject/} @array;
   @dump= grep{/dump/} @array;
 }
-
-open (MYFILE, '>reject.txt');
+$size = scalar(@reject);
+open (MYFILE_1, '>reject.txt');
 foreach(@reject){
-  @reject_reason=split(/;/, $reject[$_]);
-  @from= split(/ /, $reject_reason[3]);
-  print MYFILE "($from[1] - $reject_reason[1])\n";
+  ($first, $second, $thirth, $fourth) = split(/;/);
+  push (@second, $second);
+  push (@fourth, $fourth);
 }
-close (MYFILE);
+
+foreach(@fourth){
+  ($one, $two, $three, $four, $five) = split(/ /);
+  push (@two, $two);
+}
+for ($i=0; $i<$size; $i++){
+print MYFILE_1 ("$two[$i]  - $second[$i] \n");
+}
+close (MYFILE_1);
+
