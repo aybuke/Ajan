@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+use JSON;
+use Data::Dumper;
+
 open(LOG, "<sorunlu-edu-alanlar.txt");
 
 while(<LOG>){
@@ -40,4 +43,18 @@ while(<REJECT>){
 }
 close(REJECT);
 
+foreach(@uniq){
+  ($from) = split(/ /);
+  push (@from, $from);
+}
 
+foreach(@from){
+  ($before, $after) = split(/@/);
+  push (@from2, $after);
+}
+
+
+my $json = '["edu.tr", {"adet" : "***", "reason" : "$second"}]';
+
+my @decoded_json = @{decode_json($json)};
+print Dumper(@decoded_json), "\n";
