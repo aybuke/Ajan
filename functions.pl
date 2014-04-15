@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use JSON;
+use XML::Simple;
 use Data::Dumper;
 
 open(LOG, "<sorunlu-edu-alanlar.txt");
@@ -15,6 +15,7 @@ foreach (@array){
   @dump= grep{/dump/} @array;
 }
 $size = scalar(@reject);
+
 open (MYFILE_1, '>reject.txt');
 foreach(@reject){
   ($first, $second, $thirth, $fourth) = split(/;/);
@@ -37,24 +38,33 @@ print MYFILE_1 ("$two[$i]  - $second[$i] \n");
 }
 close (MYFILE_1);
 
-open(REJECT, "<reject.txt");
+open (REJECT, "reject.txt");
 while(<REJECT>){
-  push(@uniq, $_);
+  push(@rjct, $_);
 }
 close(REJECT);
 
-foreach(@uniq){
-  ($from) = split(/ /);
-  push (@from, $from);
+foreach (@rjct){
+  ($ilk, $son) = split(/ - /);
+  push (@ilk, $ilk);
+  push (@son, $son);
 }
 
-foreach(@from){
-  ($before, $after) = split(/@/);
-  push (@from2, $after);
+foreach (@ilk){
+  ($before_at, $after_at) = split(/@/);
+  push (@after_at, $after_at);
 }
 
+open (XMLFILE, '>reject.xml');
 
-my $json = '["edu.tr", {"adet" : "***", "reason" : "$second"}]';
+print XMLFILE ("<okullar>\n");
 
-my @decoded_json = @{decode_json($json)};
-print Dumper(@decoded_json), "\n";
+for ($j=0; $j<$size; $j++){
+  print XMLFILE ("  <okul>$after_at[$j] \n");
+  print XMLFILE ("    <from>$two[$j]</from>\n");
+  print XMLFILE ("    <reason>$second[$j]</reason>\n");
+  print XMLFILE ("  </okul> \n");
+}
+
+print XMLFILE ("</okullar> \n");
+
