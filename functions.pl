@@ -57,16 +57,36 @@ foreach (@after_at){
   push(@before_l, $before_l);
 }
 
+system("uniq reject.txt > reject_summary.txt");
+
+open(SUM, "<reject_summary.txt");
+
+while(<SUM>){
+  push (@sum, $_);
+}
+close(SUM);
+
+$size2 = scalar(@sum);
+
+foreach (@sum){
+  ($sum_before, $sum_after) = split(/@/);
+  push(@sum_after, $sum_after);
+}
+
+foreach (@sum_after){
+  ($sum_lb, $sum_la) = split(/>/);
+  push(@sum_lb, $sum_lb);
+} 
+
 open (XMLFILE, '>reject.xml');
 
 print XMLFILE ("<okullar>\n");
 
-for ($j=0; $j<$size; $j++){
-  print XMLFILE ("  <okul>$before_l[$j] \n");
-  print XMLFILE ("    <from>$two[$j]</from>\n");
-  print XMLFILE ("    <reason>$second[$j]</reason>\n");
-  print XMLFILE ("  </okul> \n");
+for ($j=0; $j<$size2; $j++){
+  print XMLFILE (" <okul>$sum_lb[$j] \n");
+  print XMLFILE (" <from>$two[$j]</from>\n");
+  print XMLFILE (" <reason>$second[$j]</reason>\n");
+  print XMLFILE (" </okul> \n");
 }
 
 print XMLFILE ("</okullar> \n");
-
