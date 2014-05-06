@@ -1,8 +1,5 @@
 #!/usr/bin/perl
 
-use XML::Simple;
-use Data::Dumper;
-
 open(LOG, "<sorunlu-edu-alanlar.txt");
 
 while(<LOG>){
@@ -55,12 +52,17 @@ foreach (@ilk){
   push (@after_at, $after_at);
 }
 
+foreach (@after_at){
+  ($before_l, $after_l) = split(/>/);
+  push(@before_l, $before_l);
+}
+
 open (XMLFILE, '>reject.xml');
 
 print XMLFILE ("<okullar>\n");
 
 for ($j=0; $j<$size; $j++){
-  print XMLFILE ("  <okul>$after_at[$j] \n");
+  print XMLFILE ("  <okul>$before_l[$j] \n");
   print XMLFILE ("    <from>$two[$j]</from>\n");
   print XMLFILE ("    <reason>$second[$j]</reason>\n");
   print XMLFILE ("  </okul> \n");
